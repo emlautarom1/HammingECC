@@ -10,8 +10,7 @@ public class Main {
     public static void main(String[] args) {
         int hammingLevel = 7;
         int chunkSize = 4;
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
+
         try {
             File file = new File(Main.class.getResource("sample.txt").toURI());
             byte[] data = Files.readAllBytes(file.toPath());
