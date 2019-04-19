@@ -1,44 +1,88 @@
 package app.services;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.BitSet;
+
+import static app.services.Indexer.isPowerOfTwo;
+import static app.services.Indexer.twoPowers;
 
 public class Hamming {
 
-    public static byte[] encode(byte[] bytes, int level, int chunkSize) {
-        if (level != 7 || chunkSize != 4) {
-            throw new NotImplementedException();
-            // TODO: Check case where the sourceBits size % chunkSize != 0 and add proper padding
-        }
+    public static byte[] encode(byte[] bytes, int hammingLevel) {
+        int chunkSize = chunkSize(hammingLevel);
+
         BitSet sourceBits = BitSet.valueOf(bytes);
 
-        int bufferSize = (sourceBits.size() / chunkSize) * level;
+        int bufferSize = (sourceBits.size() / chunkSize) * hammingLevel;
         // No need for manual padding since is automatic with BitSet.toByteArray()
-        BitSet hammingBitsBuffer = new BitSet(bufferSize);
+        BitSet outputBits = new BitSet(bufferSize);
 
-        int bffOff = 0;
-        for (int srcOffset = 0; srcOffset < sourceBits.size(); srcOffset += chunkSize) { // Ex: 0 -> 4 -> 8 -> ...
-            writeHamming7(srcOffset, sourceBits, bffOff, hammingBitsBuffer);
-            bffOff += level; // Ex: 0 -> 7 -> 14 -> ...
+        int outOff = 0;
+        for (int srcOff = 0; srcOff < sourceBits.size(); srcOff += chunkSize) { // Ex: 0 -> 4 -> 8 -> ...
+            writeHamming(hammingLevel, sourceBits, outputBits, srcOff, outOff);
+            outOff += hammingLevel; // Ex: 0 -> 7 -> 14 -> ...
         }
 
-        return hammingBitsBuffer.toByteArray();
+        // Debug print
+        // printBitSet(sourceBits, 8);
+        // printBitSet(outputBits, 16);
+        return outputBits.toByteArray();
     }
 
-    private static void writeHamming7(int srcOff, BitSet src, int bffOff, BitSet buff) {
-        // TODO: Make a proper for-loop for Hamming-N
-        boolean p1 = src.get(srcOff) & src.get(srcOff + 1) & src.get(srcOff + 3);
-        boolean p2 = src.get(srcOff) & src.get(srcOff + 1) & src.get(srcOff + 3);
-        boolean p3 = src.get(srcOff) & src.get(srcOff + 1) & src.get(srcOff + 3);
+    private static void writeHamming(int hammingLevel, BitSet src, BitSet out, int srcOff, int outOff) {
+        placeDataBits(hammingLevel, src, out, srcOff, outOff);
+        placeParityBits(hammingLevel, out, outOff);
+    }
 
-        if (p1) buff.set(bffOff);
-        if (p2) buff.set(bffOff + 1);
-        if (src.get(0)) buff.set(bffOff + 2);
-        if (p3) buff.set(bffOff + 3);
-        if (src.get(1)) buff.set(bffOff + 4);
-        if (src.get(2)) buff.set(bffOff + 5);
-        if (src.get(3)) buff.set(bffOff + 6);
+    // Writtes in the output BitSet all the bits that are NOT powers of 2.
+    private static void placeDataBits(int hammingLevel, BitSet src, BitSet out, int srcOff, int outBff) {
+        int readIndex = 0;
+        for (int writeIndex = 0; writeIndex < hammingLevel; writeIndex++) {
+            if (!isPowerOfTwo(writeIndex + 1)) {
+                if (src.get(srcOff + readIndex)) {
+                    out.set(outBff + writeIndex);
+                }
+                readIndex++;
+            }
+        }
+    }
+
+    private static void placeParityBits(int hammingLevel, BitSet bff, int bffOff) {
+        for (int bitIndex = 0; bitIndex < hammingLevel; bitIndex++) {
+            if (isPowerOfTwo(bitIndex + 1)) {
+                // If is power of 2, calculate the parity through XOR
+                boolean xorResult = false;
+                for (int index : Indexer.getIndices(bitIndex + 1)) {
+                    if (index > hammingLevel) {
+                        break;
+                    } else {
+                        xorResult = xorResult ^ bff.get(bffOff + index - 1);
+                    }
+                }
+                // Set the parity bit
+                if (xorResult) bff.set(bffOff + bitIndex);
+            }
+        }
+    }
+
+    // Returns the data bits to read (chunkSize) given a hammingLevel
+    private static int chunkSize(int hammingLevel) {
+        int parityBitCount = 0;
+        for (int twoPower : twoPowers) {
+            if (twoPower <= hammingLevel) parityBitCount++;
+            else break;
+        }
+        return hammingLevel - parityBitCount;
+    }
+
+    private static void printBitSet(BitSet bs, int limit) {
+        for (int i = 0; i < limit; i++) {
+            if (bs.get(i)) {
+                System.out.print(1);
+            } else {
+                System.out.print(0);
+            }
+        }
+        System.out.println();
     }
 
 }
