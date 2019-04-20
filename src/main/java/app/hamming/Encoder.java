@@ -1,14 +1,14 @@
-package app.services;
+package app.hamming;
+
+import app.services.Indexer;
+import app.services.Util;
 
 import java.util.BitSet;
 
-import static app.services.Indexer.isPowerOfTwo;
-import static app.services.Indexer.twoPowers;
-
-public class Hamming {
+public class Encoder {
 
     public static byte[] encode(byte[] bytes, int hammingLevel) {
-        int chunkSize = chunkSize(hammingLevel);
+        int chunkSize = Util.calculateChunkSize(hammingLevel);
 
         BitSet sourceBits = BitSet.valueOf(bytes);
 
@@ -34,12 +34,12 @@ public class Hamming {
     }
 
     // Writtes in the output BitSet all the bits that are NOT powers of 2.
-    private static void placeDataBits(int hammingLevel, BitSet src, BitSet out, int srcOff, int outBff) {
+    private static void placeDataBits(int hammingLevel, BitSet src, BitSet out, int srcOff, int outOff) {
         int readIndex = 0;
         for (int writeIndex = 0; writeIndex < hammingLevel; writeIndex++) {
-            if (!isPowerOfTwo(writeIndex + 1)) {
+            if (!Util.isPowerOfTwo(writeIndex + 1)) {
                 if (src.get(srcOff + readIndex)) {
-                    out.set(outBff + writeIndex);
+                    out.set(outOff + writeIndex);
                 }
                 readIndex++;
             }
@@ -48,7 +48,7 @@ public class Hamming {
 
     private static void placeParityBits(int hammingLevel, BitSet bff, int bffOff) {
         for (int bitIndex = 0; bitIndex < hammingLevel; bitIndex++) {
-            if (isPowerOfTwo(bitIndex + 1)) {
+            if (Util.isPowerOfTwo(bitIndex + 1)) {
                 // If is power of 2, calculate the parity through XOR
                 boolean xorResult = false;
                 for (int index : Indexer.getIndices(bitIndex + 1)) {
@@ -62,27 +62,6 @@ public class Hamming {
                 if (xorResult) bff.set(bffOff + bitIndex);
             }
         }
-    }
-
-    // Returns the data bits to read (chunkSize) given a hammingLevel
-    private static int chunkSize(int hammingLevel) {
-        int parityBitCount = 0;
-        for (int twoPower : twoPowers) {
-            if (twoPower <= hammingLevel) parityBitCount++;
-            else break;
-        }
-        return hammingLevel - parityBitCount;
-    }
-
-    private static void printBitSet(BitSet bs, int limit) {
-        for (int i = 0; i < limit; i++) {
-            if (bs.get(i)) {
-                System.out.print(1);
-            } else {
-                System.out.print(0);
-            }
-        }
-        System.out.println();
     }
 
 }
