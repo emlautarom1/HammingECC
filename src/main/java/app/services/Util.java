@@ -37,12 +37,16 @@ public class Util {
 
     // Returns the data bits to read (calculateChunkSize) given a hammingLevel
     public static int calculateChunkSize(int hammingLevel) {
+        return hammingLevel - parityBitCount(hammingLevel);
+    }
+
+    public static int parityBitCount(int hammingLevel) {
         int parityBitCount = 0;
         for (int twoPower : twoPowers) {
             if (twoPower <= hammingLevel) parityBitCount++;
             else break;
         }
-        return hammingLevel - parityBitCount;
+        return parityBitCount;
     }
 
     public static boolean isPowerOfTwo(int n) {

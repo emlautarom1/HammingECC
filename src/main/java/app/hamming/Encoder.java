@@ -7,10 +7,8 @@ import java.util.BitSet;
 
 public class Encoder {
 
-    public static byte[] encode(byte[] bytes, int hammingLevel) {
+    public static BitSet encode(BitSet sourceBits, int hammingLevel) {
         int chunkSize = Util.calculateChunkSize(hammingLevel);
-
-        BitSet sourceBits = BitSet.valueOf(bytes);
 
         int bufferSize = (sourceBits.size() / chunkSize) * hammingLevel;
         // No need for manual padding since is automatic with BitSet.toByteArray()
@@ -22,10 +20,13 @@ public class Encoder {
             outOff += hammingLevel; // Ex: 0 -> 7 -> 14 -> ...
         }
 
-        // Debug print
+//        Debug prints:
+//        System.out.println("Original bits:");
 //        Util.printBitSet(sourceBits, 8);
+//        System.out.println("Encoded bits:");
 //        Util.printBitSet(outputBits, 16);
-        return outputBits.toByteArray();
+
+        return outputBits;
     }
 
     private static void writeHamming(int hammingLevel, BitSet src, BitSet out, int srcOff, int outOff) {
