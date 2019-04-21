@@ -23,8 +23,8 @@ public class Encoder {
         }
 
         // Debug print
-        // printBitSet(sourceBits, 8);
-        // printBitSet(outputBits, 16);
+//        Util.printBitSet(sourceBits, 8);
+//        Util.printBitSet(outputBits, 16);
         return outputBits.toByteArray();
     }
 
@@ -55,7 +55,7 @@ public class Encoder {
                     if (index > hammingLevel) {
                         break;
                     } else {
-                        xorResult = xorResult ^ bff.get(bffOff + index - 1);
+                        xorResult ^= bff.get(bffOff + index - 1);
                     }
                 }
                 // Set the parity bit

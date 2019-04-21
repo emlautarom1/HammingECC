@@ -28,7 +28,6 @@ public class Main {
             byte[] decodedData = Decoder.decode(outputBytes, hammingLevel);
 
             Files.write(Paths.get("data.txt"), decodedData);
-//            Files.write(Paths.get("encoded.bin"), outputBytes);
 
             long endTime = System.nanoTime();
             System.out.println("Program finished succesfully in " + (endTime - startTime) / 1000000 + " milliseconds");
