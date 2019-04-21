@@ -20,7 +20,7 @@ public class Main {
         Indexer.buildIndices();
 
         int hammingLevel = 7;
-        String fileFullName = "big.txt";
+        String fileFullName = "sample.txt";
 
         try {
             File file = new File(Main.class.getResource(fileFullName).toURI());
