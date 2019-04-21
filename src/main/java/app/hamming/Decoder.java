@@ -58,7 +58,7 @@ public class Decoder {
             }
         }
         int indexToFix = syndromeToIndex(syndrome);
-        if (indexToFix != 0) {
+        if (indexToFix < 0) {
             src.flip(indexToFix);
         }
     }
@@ -72,7 +72,7 @@ public class Decoder {
             }
             power++;
         }
-        return index;
+        return index - 1;
     }
 
     private static void placeDataBits(int hammingLevel, BitSet src, BitSet out, int srcOff, int outOff) {
