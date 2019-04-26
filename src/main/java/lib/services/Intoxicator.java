@@ -1,4 +1,4 @@
-package hamming.lib;
+package lib.services;
 
 import java.util.BitSet;
 
