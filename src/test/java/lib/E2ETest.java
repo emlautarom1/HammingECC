@@ -18,8 +18,8 @@ public class E2ETest {
     @Before
     public void setUp() throws Exception {
         Indexer.buildIndices();
-        File smallFile = new File(this.getClass().getResource(fileName).toURI());
-        this.dataBytes = Files.readAllBytes(smallFile.toPath());
+        File file = new File(this.getClass().getResource(fileName).toURI());
+        this.dataBytes = Files.readAllBytes(file.toPath());
     }
 
     @Test
