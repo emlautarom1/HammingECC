@@ -1,4 +1,4 @@
-package app.lib.services;
+package hamming.lib.services;
 
 import java.util.*;
 

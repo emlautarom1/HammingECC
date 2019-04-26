@@ -1,10 +1,10 @@
-package app;
+package hamming;
 
-import app.lib.Decoder;
-import app.lib.Encoder;
-import app.lib.Intoxicator;
-import app.lib.services.Indexer;
-import app.lib.services.Util;
+import hamming.lib.Decoder;
+import hamming.lib.Encoder;
+import hamming.lib.Intoxicator;
+import hamming.lib.services.Indexer;
+import hamming.lib.services.Util;
 
 import java.io.File;
 import java.nio.file.Files;

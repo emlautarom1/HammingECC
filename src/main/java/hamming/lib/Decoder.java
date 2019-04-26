@@ -1,7 +1,7 @@
-package app.lib;
+package hamming.lib;
 
-import app.lib.services.Indexer;
-import app.lib.services.Util;
+import hamming.lib.services.Indexer;
+import hamming.lib.services.Util;
 
 import java.util.ArrayList;
 import java.util.BitSet;
