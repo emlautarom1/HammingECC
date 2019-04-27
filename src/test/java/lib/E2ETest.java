@@ -50,7 +50,10 @@ public class E2ETest {
 
         Intoxicator.flipRandomBit(outputBits);
 
-        BitSet decodedBits = Decoder.decode(outputBits, hammingLevel, true);
+        byte[] outputBytes = outputBits.toByteArray();
+
+        BitSet encodedBits = BitSet.valueOf(outputBytes);
+        BitSet decodedBits = Decoder.decode(encodedBits, hammingLevel, true);
 
         assertEquals(dataBits, decodedBits);
 
