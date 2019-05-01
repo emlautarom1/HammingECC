@@ -1,6 +1,7 @@
 package lib;
 
-import lib.services.Indexer;
+import hamming.lib.Encoder;
+import hamming.lib.services.Indexer;
 import org.junit.Before;
 import org.junit.Test;
 

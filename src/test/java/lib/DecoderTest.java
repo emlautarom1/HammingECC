@@ -1,7 +1,8 @@
 package lib;
 
-import lib.services.Indexer;
-import lib.services.Intoxicator;
+import hamming.lib.Decoder;
+import hamming.lib.services.Indexer;
+import hamming.lib.services.Intoxicator;
 import org.junit.Before;
 import org.junit.Test;
 
