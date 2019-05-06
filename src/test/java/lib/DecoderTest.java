@@ -50,7 +50,7 @@ public class DecoderTest {
         inputBits.set(3);
         inputBits.set(5);
 
-        Intoxicator.flipRandomBit(inputBits);
+        Intoxicator.flipRandomBitsInChunks(inputBits, hammingLevel);
 
         BitSet outputBits = Decoder.decode(inputBits, hammingLevel, correct);
 

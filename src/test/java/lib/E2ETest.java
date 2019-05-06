@@ -50,7 +50,7 @@ public class E2ETest {
         BitSet dataBits = BitSet.valueOf(dataBytes);
         BitSet outputBits = Encoder.encode(dataBits, hammingLevel);
 
-        Intoxicator.flipRandomBit(outputBits);
+        Intoxicator.flipRandomBitsInChunks(outputBits, hammingLevel);
 
         byte[] outputBytes = outputBits.toByteArray();
 

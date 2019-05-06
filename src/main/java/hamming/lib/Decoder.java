@@ -25,12 +25,6 @@ public class Decoder {
             outOff += chunkSize;
         }
 
-//        Debug prints:
-//        System.out.println("Encoded and corrected bits:");
-//        Util.printBitSet(sourceBits, 16);
-//        System.out.println("Decoded bits:");
-//        Util.printBitSet(outputBits, 8);
-
         return outputBits;
     }
 

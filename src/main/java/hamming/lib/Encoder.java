@@ -20,12 +20,6 @@ public class Encoder {
             outOff += hammingLevel; // Ex: 0 -> 7 -> 14 -> ...
         }
 
-//        Debug prints:
-//        System.out.println("Original bits:");
-//        Util.printBitSet(sourceBits, 8);
-//        System.out.println("Encoded bits:");
-//        Util.printBitSet(outputBits, 16);
-
         return outputBits;
     }
 

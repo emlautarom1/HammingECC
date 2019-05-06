@@ -40,4 +40,8 @@ public class Util {
     public static boolean isPowerOfTwo(int n) {
         return Arrays.binarySearch(twoPowers, n) >= 0;
     }
+
+    static boolean randomBool() {
+        return Math.random() > 0.5;
+    }
 }
