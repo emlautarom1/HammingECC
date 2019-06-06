@@ -1,8 +1,6 @@
 package lib;
 
-import hamming.lib.Encoder;
-import hamming.lib.services.Indexer;
-import org.junit.Before;
+import hamming.lib.Hamming;
 import org.junit.Test;
 
 import java.util.BitSet;
@@ -11,21 +9,17 @@ import static org.junit.Assert.assertEquals;
 
 public class EncoderTest {
 
-    @Before
-    public void setUp() throws Exception {
-        Indexer.buildIndices();
-    }
-
     @Test
     public void encode_4_bits() {
         int hammingLevel = 7;
+        Hamming hammingUtility = new Hamming(hammingLevel);
 
         // inputBits looks like: [1, 0, 1, 0]
         BitSet inputBits = new BitSet(4);
         inputBits.set(0);
         inputBits.set(2);
 
-        BitSet outputBits = Encoder.encode(inputBits, hammingLevel);
+        BitSet outputBits = hammingUtility.encode(inputBits);
 
         // expectedBits looks like: [1, 0, 1, 1, 0, 1, 0]
         boolean[] expectedBits = {true, false, true, true, false, true, false};

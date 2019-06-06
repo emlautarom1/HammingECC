@@ -1,26 +1,19 @@
 package lib;
 
-import hamming.lib.Decoder;
-import hamming.lib.services.Indexer;
+import hamming.lib.Hamming;
 import hamming.lib.services.Intoxicator;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.BitSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DecoderTest {
-
-    @Before
-    public void setUp() throws Exception {
-        Indexer.buildIndices();
-    }
 
     @Test
     public void decode7BitsNoCorrection() {
         int hammingLevel = 7;
-        boolean correct = false;
+        Hamming hammingUtility = new Hamming(hammingLevel);
 
         // inputBits looks like: [1, 0, 1, 1, 0, 1, 0]
         BitSet inputBits = new BitSet(7);
@@ -29,7 +22,7 @@ public class DecoderTest {
         inputBits.set(3);
         inputBits.set(5);
 
-        BitSet outputBits = Decoder.decode(inputBits, hammingLevel, correct);
+        BitSet outputBits = hammingUtility.decode(inputBits, false);
 
         // expectedBits looks like: [1, 0, 1, 0]
         boolean[] expectedBits = {true, false, true, false};
@@ -41,7 +34,7 @@ public class DecoderTest {
     @Test
     public void decode7BitsCorrection() {
         int hammingLevel = 7;
-        boolean correct = true;
+        Hamming hammingUtility = new Hamming(hammingLevel);
 
         // inputBits looks like: [1, 0, 1, 1, 0, 1, 0]
         BitSet inputBits = new BitSet(7);
@@ -52,7 +45,7 @@ public class DecoderTest {
 
         Intoxicator.flipRandomBitsInChunks(inputBits, hammingLevel);
 
-        BitSet outputBits = Decoder.decode(inputBits, hammingLevel, correct);
+        BitSet outputBits = hammingUtility.decode(inputBits, true);
 
         // expectedBits looks like: [1, 0, 1, 0]
         boolean[] expectedBits = {true, false, true, false};

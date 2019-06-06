@@ -1,8 +1,6 @@
 package lib;
 
-import hamming.lib.Decoder;
-import hamming.lib.Encoder;
-import hamming.lib.services.Indexer;
+import hamming.lib.Hamming;
 import hamming.lib.services.Intoxicator;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,6 @@ public class E2ETest {
 
     @Before
     public void setUp() throws Exception {
-        Indexer.buildIndices();
         File file = new File(this.getClass().getResource(fileName).toURI());
         this.dataBytes = Files.readAllBytes(file.toPath());
     }
@@ -47,15 +44,17 @@ public class E2ETest {
     private void encode(int hammingLevel) {
         long startTime = System.nanoTime();
 
+        Hamming hammingUtility = new Hamming(hammingLevel);
+
         BitSet dataBits = BitSet.valueOf(dataBytes);
-        BitSet outputBits = Encoder.encode(dataBits, hammingLevel);
+        BitSet outputBits = hammingUtility.encode(dataBits);
 
         Intoxicator.flipRandomBitsInChunks(outputBits, hammingLevel);
 
         byte[] outputBytes = outputBits.toByteArray();
 
         BitSet encodedBits = BitSet.valueOf(outputBytes);
-        BitSet decodedBits = Decoder.decode(encodedBits, hammingLevel, true);
+        BitSet decodedBits = hammingUtility.decode(encodedBits, true);
 
         assertEquals(dataBits, decodedBits);
 
