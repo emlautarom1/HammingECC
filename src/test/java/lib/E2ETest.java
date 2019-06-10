@@ -59,7 +59,7 @@ public class E2ETest {
         assertEquals(dataBits, decodedBits);
 
         System.out.println(
-                "Hamming " + hammingLevel + " for file " + fileName + " took " + (System.nanoTime() - startTime) / 10000 + " ms"
+                "Hamming " + hammingLevel + " for file " + fileName + " took " + (System.nanoTime() - startTime) / 1000000 + " ms"
         );
     }
 }
