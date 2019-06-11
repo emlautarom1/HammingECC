@@ -1,6 +1,6 @@
 package hamming.lib;
 
-import hamming.lib.services.Indexer;
+import hamming.lib.providers.IndicesProvider;
 import hamming.lib.services.Util;
 
 import java.util.ArrayList;
@@ -10,11 +10,12 @@ import java.util.List;
 public class Hamming {
     private final int chunkSize;
     private final int hammingLevel;
+    private final IndicesProvider indices;
 
     public Hamming(int hammingLevel) {
-        Indexer.buildIndices();
         this.hammingLevel = hammingLevel;
         this.chunkSize = Util.calculateChunkSize(hammingLevel);
+        this.indices = new IndicesProvider(hammingLevel);
     }
 
     public BitSet encode(BitSet sourceBits) {
@@ -105,12 +106,8 @@ public class Hamming {
 
     private boolean calculateParityBit(BitSet src, int srcOff, int bitIndex) {
         boolean parityBit = false;
-        for (int index : Indexer.getIndices(bitIndex + 1)) {
-            if (index > hammingLevel) {
-                break;
-            } else {
-                parityBit ^= src.get(srcOff + index - 1);
-            }
+        for (int index : indices.getParityIndices(bitIndex + 1)) {
+            parityBit ^= src.get(srcOff + index - 1);
         }
         return parityBit;
     }

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Util {
 
-    static final int[] twoPowers = {
+    private static final int[] twoPowers = {
             1,
             2,
             4,
